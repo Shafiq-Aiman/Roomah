@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Task 2: Fun with Form</title>
+        <style>
+		
+		header
+		{
+			text-align: center;
+		}
+		
+		
+		.my-label
+		{
+			margin-left : 40%;
+			width :150px;
+			display : inline-block;
+			text-align: right;
+		}
+		
+		
+		.my-input
+		{
+			width :150px;
+		}
+		
+		.submitbtn
+		{
+			margin-left : 55%;
+		}
+		
+		.my-output
+		{
+			width :50px;
+			background-color: lightyellow;
+		}
+		
+		.input-invalid
+		{
+			border:2px dashed red;
+		}
+		
+	
+		
+        </style>
+        <script>
+		"use strict";
+		let Check = false;
+		
+		function validateNumber(id, min, max)
+		{
+			let number = document.getElementById(id).value;
+			
+			Check = checkWithinRange(number, min, max);//False
+			let error = document.getElementById(id);
+			if (Check == 1)
+			// If checkWithinRange gave true to check variable, it means the number is already within the boundaries.
+			{
+				error.classList.remove("input-invalid"); 
+				//So it will remove input-invalid css class especially if this css class is activated in the previous process
+			}else{
+			
+            error.classList.add("input-invalid"); 
+			//The input-invalid class will be implemented if check = false which means it is not within boundaries.
+			}
+		}
+		
+		function checkWithinRange(value, min, max)
+		{
+			if((value !="") && (value <  min || value > max)) 
+			//If the number is not empty and it is less than min or more than max, it will return false else true
+			{
+				return false;
+			}else{
+			return true;
+			}
+		}
+		
+		function prettifyString(id)
+		{
+			let text = (((document.getElementById(id).value).toLowerCase()).replace(/\s+/g, "")).replace(/[0-9]/g, "_");
+						// getTextfrominput		//converteverythingttolowercase		//removewhitespaces		//replacenumberswithunderscore
+			document.getElementById(id).value = text;
+			//The input for String is updated with this converted text
+		}
+		
+		function onFormSubmit()
+		{
+			let Backgroundcolor = document.getElementById("color").value;
+			document.body.style.background = Backgroundcolor;
+			//The color of background is changed based on the user's input
+		
+			if ((checkWithinRange(document.getElementById("number-one").value, 1, 100))
+			&& (checkWithinRange(document.getElementById("number-two").value, 1, 100)))
+			//Reuse checkWithinRange function to validate those numbers before proceed to calculations
+			{
+				let SumNumbers = +(document.getElementById("number-one").value) + +(document.getElementById("number-two").value);
+				let SubstractedNumbers = document.getElementById("number-one").value - document.getElementById("number-two").value;
+				document.getElementById("sum").value = SumNumbers;
+				document.getElementById("difference").value = SubstractedNumbers;
+				
+				//The numbers are updated into read-only inputs as outputs
+			}else{
+				alert("Please fill in two valid numbers.");
+			}
+			
+		}
+		
+        </script>
+    </head>
+    <body>
+        <header>
+            <h1>Task 2: Fun with Form</h1> 
+        </header>
+        <div class="noBorder" >
+            <form method="post" action = "javascript:onFormSubmit()">
+                <div class="my-input-row">
+                    <label class="my-label" for="number-one">Number One (1-100):</label>
+                    <input id="number-one" class="my-input" type="number" name="number-one"
+                         onchange="javascript:validateNumber('number-one', 1, 100);" required />
+                </div>
+                <div class="my-input-row">
+                    <label class="my-label" for="number-two">Number Two (1-100):</label>
+                    <input id="number-two" class="my-input" type="number" name="number-two"
+                          onchange="javascript:validateNumber('number-two', 1, 100);" required />
+                </div>
+                <div class="my-input-row">
+                    <label class="my-label" for="string">String:</label>
+                    <input id="string" class="my-input" type="text" name="string"
+							onchange="javascript:prettifyString('string');"	/>
+                </div>
+                <div class="my-input-row">
+                    <label class="my-label" for="color">Color:</label>
+                    <input id="color" class="my-input" name="color" type="color" />
+                </div>
+				<br>
+                <input id = "submit" class = "submitbtn" type="submit" value="Process" />
+				<br><br>
+				<div class="my-input-row">
+                    <label class="my-label" for="Sum">Sum:</label>
+                    <input id="sum" class="my-output" name="sumnumber" type="number" readonly />
+                </div>
+				<br>
+				<div class="my-input-row">
+                    <label class="my-label" for="Difference">Difference:</label>
+                    <input id="difference" class="my-output" name="differencenumber" type="number" readonly />
+                </div>
+				
+            </form>
+        </div>
+    </body>
+</html>
